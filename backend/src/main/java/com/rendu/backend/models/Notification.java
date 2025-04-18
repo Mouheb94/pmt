@@ -10,11 +10,14 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
+@Table(name = "notification")
 public class Notification implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private boolean read = false;
 
     @Column(name = "message", nullable = false)
     private String message;
@@ -23,20 +26,19 @@ public class Notification implements Serializable {
     private LocalDate sentDate;
 
     @ManyToOne
-    @JoinColumn(name = "utilisateur_id")
-    private User utilisateur;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "tache_id")
-    private Task tache;
+    @JoinColumn(name = "Task_id")
+    private Task task;
 
     public Notification() {
     }
 
-    public Notification(String message, User utilisateur, Task tache) {
+    public Notification(String message, User user) {
         this.message = message;
-        this.utilisateur = utilisateur;
-        this.tache = tache;
+        this.user = user;
     }
 
 

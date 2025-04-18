@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "tasks")
+@Table(name = "task")
 public class Task {
 
     @Id
@@ -37,8 +37,6 @@ public class Task {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TaskStatus status = TaskStatus.TODO;
-
-    // Project to which this task belongs
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.Setter;
 @Setter
 @Entity
-@Table(name = "project_members")
+@Table(name = "project_member")
 public class ProjectMember {
 
     @Id

@@ -27,4 +27,6 @@ public class Role {
     }
 
 
+    public Role(long l, String admin) {
+    }
 }

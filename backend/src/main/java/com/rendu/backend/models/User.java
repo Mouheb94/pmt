@@ -2,33 +2,35 @@ package com.rendu.backend.models;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
-
+@Setter
+@Getter
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Setter
+
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Setter
+
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Setter
+
     @Column(name = "password", nullable = false)
     private String password;
 
     // Many-to-Many with roles
-    @Setter
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
@@ -45,28 +47,4 @@ public class User {
         this.password = password;
     }
 
-    // Getters (Setters sont générés par lombok)
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void addRole(Role role) {
-        this.roles.add(role);
-    }
 }
