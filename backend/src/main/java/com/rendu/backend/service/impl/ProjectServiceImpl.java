@@ -79,7 +79,7 @@ public class ProjectServiceImpl implements ProjectService {
                 Optional<Role> role = roleRepository.findByName(emailRole.getRole());
                 if (role.isPresent()) {
                     user.getRoles().add(role.get());
-                    userRepository.save(user); // sauvegarde les modifications
+                    userRepository.save(user);
 
                     if (project.isPresent()) {
                         ProjectMember projectMember = new ProjectMember(user, project.get(), role.get().getName());
