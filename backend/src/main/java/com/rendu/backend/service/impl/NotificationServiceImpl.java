@@ -28,14 +28,14 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public List<Notification> getUserNotifications(User user) {
-        return notificationRepository.findByRecipient(user);
+        return notificationRepository.findByUser(user);
     }
 
     @Override
     public void markAsRead(Long id) {
         Notification notification = notificationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Notification not found"));
-        notification.setRead(true);
+        notification.setReadNot(true);
         notificationRepository.save(notification);
     }
 }

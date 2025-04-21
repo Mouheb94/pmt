@@ -1,5 +1,6 @@
 package com.rendu.backend.service;
 
+import com.rendu.backend.dto.EmailRole;
 import com.rendu.backend.models.Project;
 
 import java.util.List;
@@ -10,4 +11,6 @@ public interface ProjectService {
     Project getProjectById(Long id);
     List<Project> getAllProjects();
     void deleteProject(Long id);
+
+    void inviteMembres(Long projectId, List<EmailRole> emailRoles);
 }

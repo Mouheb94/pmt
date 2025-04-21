@@ -1,8 +1,10 @@
 package com.rendu.backend.models;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -17,7 +19,9 @@ public class Notification implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean read = false;
+
+    @Column(name = "read_Not")
+    private boolean readNot = false;
 
     @Column(name = "message", nullable = false)
     private String message;

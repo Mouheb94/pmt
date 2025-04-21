@@ -1,6 +1,7 @@
 package com.rendu.backend.controleurs;
 
 
+import com.rendu.backend.enums.TaskStatus;
 import com.rendu.backend.models.Task;
 import com.rendu.backend.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tasks")
+@RequestMapping("/pmt/tasks")
 @CrossOrigin("*")
 public class TaskController {
 
@@ -34,6 +35,16 @@ public class TaskController {
     public Task getTaskById(@PathVariable Long id) {
         return taskService.getTaskById(id);
     }
+    @GetMapping("/{status}")
+    public List<Task> getTaskByStatus(@PathVariable TaskStatus status) {
+        return taskService.getTasksByStatus(status);
+    }
+
+    @GetMapping("/assigner/{userId}/{taskId}")
+    public Task assigneTask(@PathVariable Long userId,@PathVariable Long taskId) {
+        return taskService.assigneTask(userId,taskId);
+    }
+
 
     @PutMapping("/{id}")
     public Task updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {

@@ -3,8 +3,10 @@ package com.rendu.backend.models;
 
 import com.rendu.backend.enums.RoleName;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.Setter;
 @Setter
+@Getter
 @Entity
 @Table(name = "project_member")
 public class ProjectMember {

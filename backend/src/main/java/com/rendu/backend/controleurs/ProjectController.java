@@ -1,6 +1,7 @@
 package com.rendu.backend.controleurs;
 
 
+import com.rendu.backend.dto.EmailRole;
 import com.rendu.backend.models.Project;
 import com.rendu.backend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,11 @@ public class ProjectController {
     @DeleteMapping("/{id}")
     public void deleteProject(@PathVariable Long id) {
         projectService.deleteProject(id);
+    }
+
+    @PostMapping("/invite/{projectId}")
+    public void inviteMembres(@PathVariable Long projectId, @RequestBody List<EmailRole> emailRoles){
+        projectService.inviteMembres(projectId,emailRoles);
     }
 }
 

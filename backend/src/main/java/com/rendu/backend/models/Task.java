@@ -50,12 +50,13 @@ public class Task {
 
     public Task() {}
 
-    public Task(String name, String description, LocalDate dueDate, Priority priority, Project project) {
+    public Task(String name, String description, LocalDate dueDate, Priority priority, Project project,User user) {
         this.name = name;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
         this.project = project;
+        this.assignedTo= user;
     }
 
 

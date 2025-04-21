@@ -1,7 +1,14 @@
 package com.rendu.backend.service.impl;
 
+import com.rendu.backend.dao.ProjectMemberRepository;
 import com.rendu.backend.dao.TaskRepository;
+import com.rendu.backend.dao.UserRepository;
+import com.rendu.backend.enums.TaskStatus;
+import com.rendu.backend.models.ProjectMember;
 import com.rendu.backend.models.Task;
+import com.rendu.backend.models.User;
+
+import com.rendu.backend.service.EmailService;
 import com.rendu.backend.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,13 +18,17 @@ import java.util.Optional;
 
 @Service
 public class TaskServiceImpl implements TaskService {
-
-
+        @Autowired
+        private final EmailService emailService = new EmailService();
         private final TaskRepository taskRepository;
+        private final UserRepository userRepository;
+        private final ProjectMemberRepository projectMemberRepository;
 
         @Autowired
-        public TaskServiceImpl(TaskRepository taskRepository) {
+        public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository, ProjectMemberRepository projectMemberRepository) {
             this.taskRepository = taskRepository;
+            this.userRepository = userRepository;
+            this.projectMemberRepository = projectMemberRepository;
         }
 
         @Override
@@ -58,5 +69,32 @@ public class TaskServiceImpl implements TaskService {
         public void deleteTask(Long id) {
             taskRepository.deleteById(id);
         }
+
+    @Override
+    public List<Task> getTasksByStatus(TaskStatus status) {
+        return taskRepository.getTasksByStatus(status);
+    }
+
+    @Override
+    public Task assigneTask(Long userId, Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found with ID: " + taskId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+        task.setAssignedTo(user);
+        taskRepository.save(task);
+        List<ProjectMember> projectMembers = projectMemberRepository.findByProjectId(task.getProject().getId());
+        for (ProjectMember member : projectMembers) {
+            String subject = "Nouvelle tâche assignée dans le projet " + task.getProject().getName();
+            String body = "Bonjour " + member.getUser().getUsername() + ",\n\n" +
+                    "La tâche '" + task.getName() + "' a été assignée à " + user.getUsername() + ".\n\n" +
+                    "Merci de consulter le tableau de bord pour plus de détails.";
+
+            emailService.sendEmail(member.getUser().getEmail(), subject, body);
+        }
+
+        return task;
+    }
+
 
 }
