@@ -5,18 +5,23 @@ import com.rendu.backend.dao.ProjectRepository;
 import com.rendu.backend.dao.RoleRepository;
 import com.rendu.backend.dao.UserRepository;
 import com.rendu.backend.dto.EmailRole;
+import com.rendu.backend.dto.ProjectCreateDto;
+import com.rendu.backend.dto.ProjectDto;
+import com.rendu.backend.enums.RoleName;
+import com.rendu.backend.exception.ResourceNotFoundException;
 import com.rendu.backend.models.Project;
 import com.rendu.backend.models.ProjectMember;
 import com.rendu.backend.models.Role;
 import com.rendu.backend.models.User;
 import com.rendu.backend.service.ProjectService;
+import org.apache.tomcat.util.log.SystemLogHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -26,6 +31,8 @@ public class ProjectServiceImpl implements ProjectService {
     private final RoleRepository roleRepository;
     private final ProjectMemberRepository projectMemberRepository;
 
+
+
     @Autowired
     public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, RoleRepository roleRepository, ProjectMemberRepository projectMemberRepository) {
         this.projectRepository = projectRepository;
@@ -33,41 +40,73 @@ public class ProjectServiceImpl implements ProjectService {
         this.roleRepository = roleRepository;
         this.projectMemberRepository = projectMemberRepository;
     }
-
     @Override
-    public Project createProject(Project project) {
-        return projectRepository.save(project);
+    public ProjectDto createProject(ProjectCreateDto projectDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User creator = userRepository.findByEmail(email);
+
+        Project project = new Project();
+        project.setName(projectDto.getName());
+        project.setDescription(projectDto.getDescription());
+        project.setStartDate(projectDto.getStartDate().atStartOfDay());
+        project.setCreatedBy(creator);
+        project.setMembers(new HashSet<>());
+        Project savedProject = projectRepository.save(project);
+        ProjectMember projectMember = ProjectMember.builder()
+                .user(creator)
+                .project(savedProject)
+                .role(RoleName.ADMIN)
+                .build();
+        projectMemberRepository.save(projectMember);
+        savedProject.getMembers().add(projectMember);
+        return new ProjectDto(savedProject);
     }
 
+
+
     @Override
-    public Project updateProject(Long id, Project updatedProject) {
-        Optional<Project> optional = projectRepository.findById(id);
-        if (optional.isPresent()) {
-            Project project = optional.get();
-            project.setName(updatedProject.getName());
-            project.setDescription(updatedProject.getDescription());
-            project.setStartDate(updatedProject.getStartDate());
-            return projectRepository.save(project);
-        } else {
-            throw new RuntimeException("Project not found");
+    public ProjectDto updateProject(Long id, ProjectDto projectDto) {
+        Project existingProject = projectRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
+
+        if (projectDto.getName() != null) {
+            existingProject.setName(projectDto.getName());
         }
+        if (projectDto.getDescription() != null) {
+            existingProject.setDescription(projectDto.getDescription());
+        }
+        if (projectDto.getStartDate() != null) {
+            existingProject.setStartDate(projectDto.getStartDate().atStartOfDay());
+        }
+        if (projectDto.getCreatedById() != null) {
+            User creator = userRepository.findById(projectDto.getCreatedById())
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + projectDto.getCreatedById()));
+            existingProject.setCreatedBy(creator);
+        }
+
+        Project updatedProject = projectRepository.save(existingProject);
+        return new ProjectDto(updatedProject);
     }
 
     @Override
-    public Project getProjectById(Long id) {
-        return projectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+    public ProjectDto getProjectById(Long id) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
+        return new ProjectDto(project);
     }
 
     @Override
-    public List<Project> getAllProjects() {
-        return projectRepository.findAll();
-    }
+        public List<Project> getAllProjects() {
+            return  projectRepository.findAll();
+        }
 
     @Override
-    public void deleteProject(Long id) {
-        projectRepository.deleteById(id);
-    }
+        public void deleteProject(Long id) {
+            Project project = projectRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
+            projectRepository.delete(project);
+        }
 
     @Override
     public void inviteMembres(Long projectId, List<EmailRole> emailRoles) {
@@ -78,15 +117,11 @@ public class ProjectServiceImpl implements ProjectService {
             if (user != null) {
                 Optional<Role> role = roleRepository.findByName(emailRole.getRole());
                 if (role.isPresent()) {
-                    user.getRoles().add(role.get());
                     userRepository.save(user);
-
                     if (project.isPresent()) {
                         ProjectMember projectMember = new ProjectMember(user, project.get(), role.get().getName());
                         projectMemberRepository.save(projectMember);
                         members.add(projectMember);
-
-
                     }
                 }
             }

@@ -89,7 +89,7 @@ class UserControllerTest {
         loginRequest.setEmail("alice@example.com");
         loginRequest.setPassword("secret");
 
-        when(userService.logIn("alice@example.com", "secret")).thenReturn(user1);
+        when(userService.logIn("alice@example.com", "secret")).thenReturn(String.valueOf(user1));
 
         mockMvc.perform(get("/pmt/users/login")
                         .contentType(MediaType.APPLICATION_JSON)

@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, RouterOutlet, NgbModule],
   template: `
-  <h1>mouheb</h1>`,
-  styles: `
-  h1{
-    color: red;
-  }
+    <router-outlet></router-outlet>
   `
-
 })
 export class AppComponent {
-  title = 'frontend';
+  title = 'pmt-frontend';
 }

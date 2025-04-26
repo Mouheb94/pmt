@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/project-members")
+@RequestMapping("/pmt/project-members")
 @CrossOrigin("*")
 public class ProjectMemberController {
 
@@ -24,7 +24,7 @@ public class ProjectMemberController {
         return projectMemberService.addMemberToProject(member);
     }
 
-    @GetMapping("/project/{projectId}")
+    @GetMapping("/{projectId}")
     public List<ProjectMember> getMembersByProject(@PathVariable Long projectId) {
         return projectMemberService.getMembersByProject(projectId);
     }

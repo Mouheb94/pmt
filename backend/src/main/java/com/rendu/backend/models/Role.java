@@ -17,8 +17,7 @@ public class Role {
 
     @Column(name = "role_name", nullable = false)
     private RoleName name;
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+
 
     public Role(RoleName name) {
         this.name = name;

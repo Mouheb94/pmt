@@ -3,6 +3,7 @@ package com.rendu.backend.service.impl;
 import com.rendu.backend.dao.UserRepository;
 import com.rendu.backend.models.User;
 import com.rendu.backend.service.UserService;
+import com.rendu.backend.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -44,18 +47,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User logIn(String email, String password) {
+    public String logIn(String email, String password) {
         User user = userRepository.findByEmail(email);
-
         if (user == null) {
             throw new RuntimeException("Email non trouvé");
         }
-
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Mot de passe incorrect");
         }
-
-        return user;
+        return jwtUtil.generateToken(email);
     }
 
 }

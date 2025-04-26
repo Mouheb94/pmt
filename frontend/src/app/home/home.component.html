@@ -1,0 +1,83 @@
+<div class="home-container">
+  <div class="sidebar">
+    <div class="logo">
+      <h2>PMT</h2>
+    </div>
+    <ul class="nav-tabs">
+      <li class="nav-item">
+        <button class="nav-link active" (click)="setActiveTab('creation')" [class.active]="activeTab === 'creation'">
+          <i class="bi bi-plus-circle"></i>
+          <span>Création de projet</span>
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" (click)="setActiveTab('dashboard')" [class.active]="activeTab === 'dashboard'">
+          <i class="bi bi-speedometer2"></i>
+          <span>Tableau de bord</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <div class="content-header">
+      <h1>{{ getActiveTabTitle() }}</h1>
+      <button class="logout-btn" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i>
+        Déconnexion
+      </button>
+    </div>
+
+    <div class="tab-content">
+      <div class="tab-pane" *ngIf="activeTab === 'creation'">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Créer un nouveau projet</h5>
+            <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="project-form">
+              <div class="form-group">
+                <label for="name">Nom du projet</label>
+                <input type="text" id="name" formControlName="name" class="form-control" placeholder="Entrez le nom du projet">
+                <div class="error-message" *ngIf="projectForm.get('name')?.invalid && projectForm.get('name')?.touched">
+                  Le nom du projet est requis
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" formControlName="description" class="form-control" rows="3" placeholder="Décrivez le projet"></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="startDate">Date de début</label>
+                  <input type="date" id="startDate" formControlName="startDate" class="form-control">
+                  <div class="error-message" *ngIf="projectForm.get('startDate')?.invalid && projectForm.get('startDate')?.touched">
+                    La date de début est requise
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-submit" [disabled]="projectForm.invalid">
+                  Créer le projet
+                </button>
+                <button type="button" class="btn-cancel" (click)="resetForm()">
+                  Annuler
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tab-pane" *ngIf="activeTab === 'dashboard'">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Tableau de bord</h5>
+            <!-- Contenu du tableau de bord à implémenter -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

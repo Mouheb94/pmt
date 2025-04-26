@@ -10,5 +10,5 @@ public interface UserService {
     List<User> getAllUsers();
     void deleteUser(Long id);
 
-    User logIn(String email, String password);
+    String logIn(String email, String password);
 }

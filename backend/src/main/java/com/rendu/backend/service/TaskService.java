@@ -18,6 +18,8 @@ public interface TaskService {
 
     Task assigneTask(Long userId, Long taskId);
 
+    List<Task> getAllTasksByProjectId(Long projectId);
+
     interface NotificationService {
         Notification sendNotification(String message, User recipient);
         List<Notification> getUserNotifications(User user);

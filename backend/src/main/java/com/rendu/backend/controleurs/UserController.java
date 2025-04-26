@@ -1,16 +1,21 @@
 package com.rendu.backend.controleurs;
 
+import com.rendu.backend.dto.AuthDto;
 import com.rendu.backend.dto.LoginRequest;
 import com.rendu.backend.models.User;
 import com.rendu.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/pmt/users")
+@CrossOrigin("*")
 public class UserController {
 
     @Autowired
@@ -36,11 +41,15 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
-    @GetMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest) {
-        User user = userService.logIn(loginRequest.getEmail(), loginRequest.getPassword());
-        return ResponseEntity.ok(user);
-    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody AuthDto authDto) {
+            String token = userService.logIn(authDto.getEmail(),authDto.getPassword());
+            return ResponseEntity.ok(token);
+
+        }
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
