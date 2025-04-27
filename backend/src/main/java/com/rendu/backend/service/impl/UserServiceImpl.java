@@ -58,5 +58,13 @@ public class UserServiceImpl implements UserService {
         return jwtUtil.generateToken(email);
     }
 
+    @Override
+    public User getUserByToken(String token) {
+        String jwtToken = token.replace("Bearer ", "");
+        String email = jwtUtil.extractUsername(jwtToken);
+        User user = userRepository.findByEmail(email);
+        return user;
+    }
+
 }
 

@@ -2,20 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProjectService, Project, ProjectDto } from '../services/project.service';
+import { ProjectService } from '../services/project.service';
 import { AuthService } from '../services/auth.service';
+import { Project, ProjectDto } from '../models/project.model';
+import { User } from '../models/user.model';
+import { ProjectRole } from '../models/role.model';
+import { InviteModalComponent } from './invite-modal/invite-modal.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, InviteModalComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   projects: Project[] = [];
-  activeTab: string = 'creation';
+  activeTab: string = 'dashboard';
   projectForm: FormGroup;
+  currentUser: User | null = null;
+  showInviteModal: boolean = false;
+  selectedProjectId: number = 0;
 
   constructor(
     private router: Router,
@@ -32,6 +39,27 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProjects();
+    this.loadCurrentUser();
+  }
+
+  loadCurrentUser(): void {
+    this.currentUser = this.authService.getCurrentUser();
+    if (!this.currentUser) {
+      this.authService.getUserInfo().subscribe({
+        next: (user) => {
+          this.currentUser = user;
+        },
+        error: (error) => {
+          console.error('Erreur lors du chargement des informations utilisateur:', error);
+        }
+      });
+    }
+  }
+
+  isProjectAdmin(project: Project): boolean {
+    if (!this.currentUser) return false;
+    const member = project.members.find(m => m.user.id === this.currentUser?.id);
+    return member?.role === ProjectRole.ADMIN;
   }
 
   loadProjects(): void {
@@ -105,5 +133,20 @@ export class HomeComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  openInviteModal(projectId: number): void {
+    this.selectedProjectId = projectId;
+    this.showInviteModal = true;
+  }
+
+  closeInviteModal(): void {
+    this.showInviteModal = false;
+  }
+
+  handleInvite(data: {email: string, role: ProjectRole}): void {
+    // TODO: Implémenter l'appel API pour inviter l'utilisateur
+    console.log('Inviter:', data.email, 'avec le rôle:', data.role, 'au projet:', this.selectedProjectId);
+    this.closeInviteModal();
   }
 } 

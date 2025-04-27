@@ -36,6 +36,11 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser(@RequestHeader("Authorization") String token) {
+
+       return ResponseEntity.ok(userService.getUserByToken(token));
+    }
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {

@@ -1,0 +1,35 @@
+<div class="modal-overlay" (click)="close()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Inviter un membre</h3>
+      <button class="close-btn" (click)="close()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="inviteForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" formControlName="email" class="form-control" placeholder="Entrez l'email">
+          <div class="error-message" *ngIf="inviteForm.get('email')?.invalid && inviteForm.get('email')?.touched">
+            Email invalide
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="role">Rôle</label>
+          <select id="role" formControlName="role" class="form-control">
+            <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn-submit" [disabled]="inviteForm.invalid">
+            Ajouter
+          </button>
+          <button type="button" class="btn-cancel" (click)="close()">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 

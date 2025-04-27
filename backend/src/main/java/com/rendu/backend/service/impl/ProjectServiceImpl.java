@@ -14,6 +14,7 @@ import com.rendu.backend.models.ProjectMember;
 import com.rendu.backend.models.Role;
 import com.rendu.backend.models.User;
 import com.rendu.backend.service.ProjectService;
+import jakarta.persistence.EntityNotFoundException;
 import org.apache.tomcat.util.log.SystemLogHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -110,26 +111,33 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void inviteMembres(Long projectId, List<EmailRole> emailRoles) {
+        // 1. Charger le projet et initialiser la collection
         Optional<Project> project = projectRepository.findById(projectId);
-        Set<ProjectMember> members=new HashSet<>();
+
+        // 2. Créer une nouvelle collection basée sur l'existante
+        Set<ProjectMember> updatedMembers = new HashSet<>(project.get().getMembers());
+
+        // 3. Traiter les invitations
         for (EmailRole emailRole : emailRoles) {
             User user = userRepository.findByEmail(emailRole.getEmail());
-            if (user != null) {
-                Optional<Role> role = roleRepository.findByName(emailRole.getRole());
-                if (role.isPresent()) {
-                    userRepository.save(user);
-                    if (project.isPresent()) {
-                        ProjectMember projectMember = new ProjectMember(user, project.get(), role.get().getName());
-                        projectMemberRepository.save(projectMember);
-                        members.add(projectMember);
-                    }
-                }
+            if (user == null) continue;
+
+
+
+            boolean isAlreadyMember = updatedMembers.stream()
+                    .anyMatch(m -> m.getUser().getId().equals(user.getId()));
+
+            if (!isAlreadyMember) {
+                ProjectMember member = new ProjectMember(user, project.get(), emailRole.getRole());
+                updatedMembers.add(member);
+                projectMemberRepository.save(member);
             }
         }
-        if (project.isPresent()) {
-        project.get().setMembers(members);
+
+        // 4. Mettre à jour la collection sans la remplacer
+        project.get().getMembers().clear();
+        project.get().getMembers().addAll(updatedMembers);
         projectRepository.save(project.get());
-        }
     }
 
 }

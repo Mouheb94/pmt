@@ -412,4 +412,110 @@ textarea.form-control {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.projects-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.project-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.project-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.project-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-details, .btn-invite {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-details {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-details:hover {
+  background-color: #5a6268;
+}
+
+.btn-invite {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-invite:hover {
+  background-color: #218838;
+}
+
+.btn-details i, .btn-invite i {
+  font-size: 1rem;
+}
+
+.project-content {
+  color: #666;
+}
+
+.project-description {
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.project-details {
+  display: flex;
+  gap: 15px;
+  font-size: 0.9rem;
+}
+
+.project-date {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #666;
+}
+
+.project-date i {
+  color: #007bff;
 } 

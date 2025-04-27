@@ -1,53 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Project, ProjectDto } from '../models/project.model';
 import { AuthService } from './auth.service';
-
-export interface Project {
-  id: number;
-  name: string;
-  description: string;
-  startDate: string;
-  createdBy: {
-    id: number;
-    username: string;
-  };
-  members: {
-    id: number;
-    user: {
-      id: number;
-      username: string;
-    };
-    role: string;
-  }[];
-  tasks: {
-    id: number;
-    name: string;
-    description: string;
-    dueDate: string;
-    priority: string;
-    status: string;
-    assignedTo: {
-      id: number;
-      username: string;
-    } | null;
-  }[];
-}
-
-export interface ProjectDto {
-  id?: number;
-  name: string;
-  description: string;
-  startDate: Date;
-}
+import { EmailRole } from '../models/email-role.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
   private baseUrl = '/pmt/projects';
+  private headers: HttpHeaders;
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService) {
+    this.headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+  }
+
+  inviteMembers(projectId: number, emailRoles: EmailRole[]): Observable<void> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.post<void>(`${this.baseUrl}/invite/${projectId}`, emailRoles, { headers });
+  }
 
   getProjects(): Observable<Project[]> {
     const headers = this.authService.getAuthHeaders();

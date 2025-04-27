@@ -34,12 +34,10 @@ public class ProjectMember {
     @Column(nullable = false)
     private RoleName role;
 
-
-    public ProjectMember(Long id, String username, RoleName role) {
-
-    }
-
-    public ProjectMember(User user, Project project, RoleName roleName) {
+    public ProjectMember(User user, Project project, RoleName role) {
+        this.user = user;
+        this.project = project;
+        this.role = role;
     }
 }
 

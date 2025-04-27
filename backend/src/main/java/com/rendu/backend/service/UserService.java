@@ -11,4 +11,6 @@ public interface UserService {
     void deleteUser(Long id);
 
     String logIn(String email, String password);
+
+    User getUserByToken(String token);
 }

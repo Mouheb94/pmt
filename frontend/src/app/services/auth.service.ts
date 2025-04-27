@@ -3,23 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpErrorResponse } 
 import { Observable, BehaviorSubject, catchError, throwError, of } from 'rxjs';
 import { tap, switchMap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-
-export interface LoginData {
-  email: string;
-  password: string;
-}
-
-export interface SignupData {
-  username: string;
-  email: string;
-  password: string;
-}
-
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-}
+import { User, SignupData } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
