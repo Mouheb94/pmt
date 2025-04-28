@@ -1,7 +1,7 @@
 export enum ProjectRole {
   ADMIN = 'ADMIN',
   MEMBER = 'MEMBER',
-  VIEWER = 'VIEWER'
+  OBSERVATOR = 'OBSERVATOR'
 }
 
 export interface ProjectMember {

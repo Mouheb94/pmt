@@ -59,7 +59,6 @@ export class HomeComponent implements OnInit {
   isProjectAdmin(project: Project): boolean {
     if (!this.currentUser) return false;
     const member = project.members.find(m => m.userId === this.currentUser?.id);
-    console.log(member+"memberCONNECTER");
     return member?.role === ProjectRole.ADMIN;
   }
 
@@ -67,8 +66,6 @@ export class HomeComponent implements OnInit {
     this.projectService.getProjects().subscribe({
       next: (projects) => {
         this.projects = projects;
-        console.log("projects");
-        console.log(this.projects);
       },
       error: (error) => {
         console.error('Erreur lors du chargement des projets:', error);

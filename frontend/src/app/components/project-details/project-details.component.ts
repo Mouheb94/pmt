@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { TaskService } from '../../services/task.service';
@@ -14,7 +15,14 @@ import { CreateTaskModalComponent } from './create-task-modal/create-task-modal.
 @Component({
   selector: 'app-project-details',
   standalone: true,
-  imports: [CommonModule, MembersModalComponent, KanbanBoardComponent, CreateTaskModalComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MembersModalComponent,
+    KanbanBoardComponent,
+    CreateTaskModalComponent
+  ],
   templateUrl: './project-details.component.html',
   styleUrls: ['./project-details.component.css']
 })
@@ -45,7 +53,6 @@ export class ProjectDetailsComponent implements OnInit {
     this.projectService.getProjectDetails(id).subscribe({
       next: (project) => {
         this.project = project;
-        console.log(this.project.tasks[0].name +"projectMouheb");
       },
       error: (error) => {
         console.error('Erreur lors du chargement des détails du projet:', error);

@@ -42,6 +42,6 @@ export class TaskService {
 
   assignTask(taskId: number, userId: number | null): Observable<Task> {
     const headers = this.authService.getAuthHeaders();
-    return this.http.patch<Task>(`${this.baseUrl}/${taskId}/assign`, { userId }, { headers });
+    return this.http.patch<Task>(`${this.baseUrl}/assigner/${userId}/${taskId}`, { headers });
   }
 } 

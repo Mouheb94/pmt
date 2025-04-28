@@ -45,7 +45,7 @@ public class TaskController {
         return taskService.getTasksByStatus(status);
     }
 
-    @GetMapping("/assigner/{userId}/{taskId}")
+    @PatchMapping ("/assigner/{userId}/{taskId}")
     public Task assigneTask(@PathVariable Long userId,@PathVariable Long taskId) {
         return taskService.assigneTask(userId,taskId);
     }

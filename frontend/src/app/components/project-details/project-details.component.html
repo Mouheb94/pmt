@@ -2,7 +2,7 @@
   <div class="project-header">
     <h1>{{ project.name }}</h1>
     <div class="project-actions">
-      <button (click)="openMembersModal()">Gérer les membres</button>
+      <button (click)="openMembersModal()">Membres du Projet</button>
       <button (click)="goBack()">Retour</button>
     </div>
   </div>
@@ -22,7 +22,7 @@
     </div>
     <app-kanban-board 
       [tasks]="project?.tasks || []" 
-      [projectId]="project?.id || 0"
+      [projectId]="project.id || 0"
       [projectMembers]="project.members || []">
     </app-kanban-board>
   </div>

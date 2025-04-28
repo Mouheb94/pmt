@@ -8,7 +8,7 @@
     <div class="kanban-column">
       <h3>À faire</h3>
       <div class="task-list">
-        <div *ngFor="let task of todoTasks" class="task-card">
+        <div *ngFor="let task of todoTasks" class="task-card" (click)="openTaskDetails(task)">
           <h4>{{ task.name }}</h4>
           <p>{{ task.description }}</p>
           <div class="task-info">
@@ -28,7 +28,7 @@
     <div class="kanban-column">
       <h3>En cours</h3>
       <div class="task-list">
-        <div *ngFor="let task of inProgressTasks" class="task-card">
+        <div *ngFor="let task of inProgressTasks" class="task-card" (click)="openTaskDetails(task)">
           <h4>{{ task.name }}</h4>
           <p>{{ task.description }}</p>
           <div class="task-info">
@@ -48,7 +48,7 @@
     <div class="kanban-column">
       <h3>Terminé</h3>
       <div class="task-list">
-        <div *ngFor="let task of doneTasks" class="task-card">
+        <div *ngFor="let task of doneTasks" class="task-card" (click)="openTaskDetails(task)">
           <h4>{{ task.name }}</h4>
           <p>{{ task.description }}</p>
           <div class="task-info">
@@ -65,4 +65,13 @@
       </div>
     </div>
   </div>
+
+  <app-task-details-modal
+    *ngIf="selectedTask"
+    [task]="selectedTask"
+    [projectMembers]="projectMembers"
+    [currentUserRole]="currentUserRole"
+    (close)="closeTaskDetails()"
+    (taskUpdated)="handleTaskUpdated($event)">
+  </app-task-details-modal>
 </div> 
