@@ -44,12 +44,13 @@ public class Project {
     public Project() {
     }
 
-    public Project(String name, String description, LocalDateTime startDate, User createdBy, Set<ProjectMember> members) {
+    public Project(String name, String description, LocalDateTime startDate, User createdBy, Set<ProjectMember> members , Set<Task> tasks) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.createdBy = createdBy;
         this.members = members;
+        this.tasks =tasks;
     }
 
 

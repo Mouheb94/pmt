@@ -21,9 +21,9 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return taskService.createTask(task);
+    @PostMapping("/create/{projectId}")
+    public Task createTask(@RequestBody Task task,@PathVariable Long projectId) {
+        return taskService.createTask(task,projectId);
     }
 
     @GetMapping
@@ -31,7 +31,7 @@ public class TaskController {
         return taskService.getAllTasks();
     }
 
-    @GetMapping("/{projectId}")
+    @GetMapping("/project/{projectId}")
     public List<Task> getAllTasksByProjectId(@PathVariable Long projectId) {
         return taskService.getAllTasksByProjectId(projectId);
     }

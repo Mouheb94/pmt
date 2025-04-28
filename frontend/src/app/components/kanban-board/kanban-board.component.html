@@ -1,0 +1,68 @@
+<div class="kanban-board">
+
+  <div *ngIf="!tasks || tasks.length === 0" class="no-tasks-message">
+    <p>Aucune tâche n'est disponible pour ce projet.</p>
+  </div>
+
+  <div *ngIf="tasks && tasks.length > 0" class="kanban-columns">
+    <div class="kanban-column">
+      <h3>À faire</h3>
+      <div class="task-list">
+        <div *ngFor="let task of todoTasks" class="task-card">
+          <h4>{{ task.name }}</h4>
+          <p>{{ task.description }}</p>
+          <div class="task-info">
+            <span class="priority">{{ task.priority }}</span>
+            <span class="due-date">Échéance: {{ task.dueDate | date }}</span>
+          </div>
+          <div class="assigned-to" *ngIf="task.assignedTo">
+            Assigné à: {{ task.assignedTo.username }}
+          </div>
+        </div>
+        <div *ngIf="todoTasks.length === 0" class="empty-column-message">
+          Aucune tâche à faire
+        </div>
+      </div>
+    </div>
+
+    <div class="kanban-column">
+      <h3>En cours</h3>
+      <div class="task-list">
+        <div *ngFor="let task of inProgressTasks" class="task-card">
+          <h4>{{ task.name }}</h4>
+          <p>{{ task.description }}</p>
+          <div class="task-info">
+            <span class="priority">{{ task.priority }}</span>
+            <span class="due-date">Échéance: {{ task.dueDate | date }}</span>
+          </div>
+          <div class="assigned-to" *ngIf="task.assignedTo">
+            Assigné à: {{ task.assignedTo.username }}
+          </div>
+        </div>
+        <div *ngIf="inProgressTasks.length === 0" class="empty-column-message">
+          Aucune tâche en cours
+        </div>
+      </div>
+    </div>
+
+    <div class="kanban-column">
+      <h3>Terminé</h3>
+      <div class="task-list">
+        <div *ngFor="let task of doneTasks" class="task-card">
+          <h4>{{ task.name }}</h4>
+          <p>{{ task.description }}</p>
+          <div class="task-info">
+            <span class="priority">{{ task.priority }}</span>
+            <span class="due-date">Échéance: {{ task.dueDate | date }}</span>
+          </div>
+          <div class="assigned-to" *ngIf="task.assignedTo">
+            Assigné à: {{ task.assignedTo.username }}
+          </div>
+        </div>
+        <div *ngIf="doneTasks.length === 0" class="empty-column-message">
+          Aucune tâche terminée
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

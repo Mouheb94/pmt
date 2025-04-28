@@ -1,0 +1,60 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Créer une nouvelle tâche</h3>
+      <button class="close-btn" (click)="onClose()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="name">Nom de la tâche</label>
+          <input type="text" id="name" formControlName="name" class="form-control" placeholder="Entrez le nom de la tâche">
+          <div class="error-message" *ngIf="taskForm.get('name')?.invalid && taskForm.get('name')?.touched">
+            Le nom est requis (minimum 3 caractères)
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" formControlName="description" class="form-control" rows="3" placeholder="Entrez la description de la tâche"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="dueDate">Date d'échéance</label>
+          <input type="date" id="dueDate" formControlName="dueDate" class="form-control">
+          <div class="error-message" *ngIf="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched">
+            La date d'échéance est requise
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="priority">Priorité</label>
+          <select id="priority" formControlName="priority" class="form-control">
+            <option value="LOW">Basse</option>
+            <option value="MEDIUM">Moyenne</option>
+            <option value="HIGH">Haute</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="assignedTo">Assigner à</label>
+          <select id="assignedTo" formControlName="assignedTo" class="form-control">
+            <option [ngValue]="null">Non assigné</option>
+            <option *ngFor="let member of projectMembers" [ngValue]="member.userId">
+              {{ member.username }}
+            </option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn-submit" [disabled]="taskForm.invalid">
+            Créer
+          </button>
+          <button type="button" class="btn-cancel" (click)="onClose()">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 

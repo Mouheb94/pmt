@@ -94,13 +94,21 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDto getProjectById(Long id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
-        return new ProjectDto(project);
+                   return new ProjectDto(project);
     }
 
     @Override
-        public List<Project> getAllProjects() {
-            return  projectRepository.findAll();
-        }
+    public List<Project> getAllProjects() {
+        return  projectRepository.findAll();
+    }
+
+    @Override
+    public List<ProjectDto> getAllProjectsDto() {
+        List<Project> projects = projectRepository.findAll();
+        return projects.stream()
+                .map(ProjectDto::new)
+                .collect(Collectors.toList());
+    }
 
     @Override
         public void deleteProject(Long id) {

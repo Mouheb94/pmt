@@ -13,8 +13,8 @@ public interface ProjectService {
 
     ProjectDto getProjectById(Long id);
     List<Project> getAllProjects();
+    List<ProjectDto> getAllProjectsDto();
     void deleteProject(Long id);
     void inviteMembres(Long projectId, List<EmailRole> emailRoles);
-    //ProjectDto createProject(ProjectDto projectDto);
     ProjectDto createProject(ProjectCreateDto projectDto);
 }

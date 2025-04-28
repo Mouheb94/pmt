@@ -1,0 +1,153 @@
+.kanban-board {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  min-height: 500px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+.kanban-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.kanban-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.create-task-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.create-task-btn:hover {
+  background-color: #45a049;
+}
+
+.no-tasks-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 200px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-tasks-message p {
+  color: #666;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+.kanban-columns {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.kanban-column {
+  flex: 1;
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.kanban-column h3 {
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eee;
+  color: #333;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 100px;
+}
+
+.empty-column-message {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.task-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-card h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.task-card p {
+  margin: 0 0 10px 0;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.task-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.8em;
+}
+
+.priority {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.priority.HIGH {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.priority.MEDIUM {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.priority.LOW {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.due-date {
+  color: #666;
+}
+
+.assigned-to {
+  font-size: 0.8em;
+  color: #666;
+  font-style: italic;
+} 

@@ -1,9 +1,11 @@
 package com.rendu.backend.service.impl;
 
 import com.rendu.backend.dao.ProjectMemberRepository;
+import com.rendu.backend.dao.ProjectRepository;
 import com.rendu.backend.dao.TaskRepository;
 import com.rendu.backend.dao.UserRepository;
 import com.rendu.backend.enums.TaskStatus;
+import com.rendu.backend.models.Project;
 import com.rendu.backend.models.ProjectMember;
 import com.rendu.backend.models.Task;
 import com.rendu.backend.models.User;
@@ -23,16 +25,21 @@ public class TaskServiceImpl implements TaskService {
         private final TaskRepository taskRepository;
         private final UserRepository userRepository;
         private final ProjectMemberRepository projectMemberRepository;
+    private final ProjectRepository projectRepository;
 
         @Autowired
-        public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository, ProjectMemberRepository projectMemberRepository) {
+        public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository, ProjectMemberRepository projectMemberRepository, ProjectRepository projectRepository) {
             this.taskRepository = taskRepository;
             this.userRepository = userRepository;
             this.projectMemberRepository = projectMemberRepository;
+            this.projectRepository = projectRepository;
         }
 
         @Override
-        public Task createTask(Task task) {
+        public Task createTask(Task task,Long projectId) {
+            Optional<Project> project = projectRepository.findById(projectId);
+            task.setProject(project.get());
+            project.get().getTasks().add(task);
             return taskRepository.save(task);
         }
 

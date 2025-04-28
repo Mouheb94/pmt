@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Project, ProjectDto } from '../models/project.model';
+import { Project, ProjectDto, Task } from '../models/project.model';
 import { AuthService } from './auth.service';
 import { EmailRole } from '../models/email-role.model';
 
@@ -25,7 +25,12 @@ export class ProjectService {
 
   getProjects(): Observable<Project[]> {
     const headers = this.authService.getAuthHeaders();
-    return this.http.get<Project[]>(this.baseUrl, { headers });
+    return this.http.get<Project[]>(`${this.baseUrl}/details`, { headers });
+  }
+
+  getProjectDetails(id: number): Observable<Project> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get<Project>(`${this.baseUrl}/${id}`, { headers });
   }
 
   createProject(projectDto: ProjectDto): Observable<Project> {
@@ -36,5 +41,10 @@ export class ProjectService {
   deleteProject(id: number): Observable<void> {
     const headers = this.authService.getAuthHeaders();
     return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers });
+  }
+
+  createTask(projectId: number, taskData: Partial<Task>): Observable<Task> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.post<Task>(`${this.baseUrl}/${projectId}/tasks`, taskData, { headers });
   }
 } 

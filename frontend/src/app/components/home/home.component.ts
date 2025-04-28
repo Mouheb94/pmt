@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProjectService } from '../services/project.service';
-import { AuthService } from '../services/auth.service';
-import { Project, ProjectDto } from '../models/project.model';
-import { User } from '../models/user.model';
-import { ProjectRole } from '../models/role.model';
+import { ProjectService } from '../../services/project.service';
+import { AuthService } from '../../services/auth.service';
+import { Project, ProjectDto } from '../../models/project.model';
+import { User } from '../../models/user.model';
+import { ProjectRole } from '../../models/role.model';
 import { InviteModalComponent } from './invite-modal/invite-modal.component';
 
 @Component({
@@ -58,7 +58,8 @@ export class HomeComponent implements OnInit {
 
   isProjectAdmin(project: Project): boolean {
     if (!this.currentUser) return false;
-    const member = project.members.find(m => m.user.id === this.currentUser?.id);
+    const member = project.members.find(m => m.userId === this.currentUser?.id);
+    console.log(member+"memberCONNECTER");
     return member?.role === ProjectRole.ADMIN;
   }
 
@@ -145,7 +146,6 @@ export class HomeComponent implements OnInit {
   }
 
   handleInvite(data: {email: string, role: ProjectRole}): void {
-    // TODO: Implémenter l'appel API pour inviter l'utilisateur
     console.log('Inviter:', data.email, 'avec le rôle:', data.role, 'au projet:', this.selectedProjectId);
     this.closeInviteModal();
   }

@@ -39,8 +39,11 @@ public class ProjectController {
 
     @GetMapping
     public List<Project> getAllProjects() {
-
         return projectService.getAllProjects();
+    }
+    @GetMapping("/details")
+    public List<ProjectDto> getAllProjectsDto() {
+        return projectService.getAllProjectsDto();
     }
 
     @GetMapping("/{id}")

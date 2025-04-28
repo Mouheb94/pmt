@@ -1,0 +1,18 @@
+<div class="modal-overlay" *ngIf="project">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Membres du Projet</h3>
+      <button class="close-btn" (click)="close()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="members-list">
+        <div class="member-item" *ngFor="let member of project.members">
+          <div class="member-info">
+            <span class="member-name">{{ member.username }}</span>
+            <span class="member-role">{{ member.role }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

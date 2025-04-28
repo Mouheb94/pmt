@@ -8,7 +8,7 @@ import com.rendu.backend.models.User;
 import java.util.List;
 
 public interface TaskService {
-    Task createTask(Task task);
+    Task createTask(Task task,Long id);
     Task updateTask(Long id, Task updatedTask);
     Task getTaskById(Long id);
     List<Task> getAllTasks();

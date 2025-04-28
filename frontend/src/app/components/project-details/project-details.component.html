@@ -1,0 +1,42 @@
+<div class="project-details" *ngIf="project">
+  <div class="project-header">
+    <h1>{{ project.name }}</h1>
+    <div class="project-actions">
+      <button (click)="openMembersModal()">Gérer les membres</button>
+      <button (click)="goBack()">Retour</button>
+    </div>
+  </div>
+
+  <div class="project-info">
+    <p>{{ project.description }}</p>
+    <p>Date de début: {{ project.startDate | date }}</p>
+   
+  </div>
+
+  <div class="kanban-section">
+    <div class="kanban-header">
+      <h2>Tableau des tâches</h2>
+      <button *ngIf="canCreateTask()" class="create-task-btn" (click)="createTask()">
+        Créer une Tâche
+      </button>
+    </div>
+    <app-kanban-board 
+      [tasks]="project?.tasks || []" 
+      [projectId]="project?.id || 0"
+      [projectMembers]="project.members || []">
+    </app-kanban-board>
+  </div>
+
+  <app-members-modal
+    *ngIf="showMembersModal"
+    [project]="project"
+    (closeModal)="closeMembersModal()">
+  </app-members-modal>
+
+  <app-create-task-modal
+    *ngIf="showCreateTaskModal"
+    [projectMembers]="project.members || []"
+    (create)="handleTaskCreated($event)"
+    (close)="closeCreateTaskModal()">
+  </app-create-task-modal>
+</div> 

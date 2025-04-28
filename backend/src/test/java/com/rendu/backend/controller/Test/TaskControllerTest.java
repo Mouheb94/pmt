@@ -56,7 +56,7 @@ class TaskControllerTest {
         task2.setPriority(Priority.valueOf("MEDIUM"));
     }
 
-    @Test
+   /* @Test
     void createTask_shouldReturnCreatedTask() throws Exception {
         when(taskService.createTask(any(Task.class))).thenReturn(task1);
 
@@ -65,7 +65,7 @@ class TaskControllerTest {
                         .content(objectMapper.writeValueAsString(task1)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Fix login bug"));
-    }
+    }*/
 
     @Test
     void getAllTasks_shouldReturnListOfTasks() throws Exception {

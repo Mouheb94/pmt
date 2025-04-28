@@ -24,13 +24,14 @@ public class ProjectDto {
     private Long createdById;
     private List<ProjectMemberDto> members;
 
-    private List<Task> tasks;
+    private List<TaskDto> tasks;
     public ProjectDto(Project project){
         this.id=project.getId();
         this.name=project.getName();
         this.description=project.getDescription();
         this.startDate=project.getStartDate().toLocalDate();
         this.createdById=project.getCreatedBy().getId();
+        if(project.getMembers()!=null){
         this.members = project.getMembers()
                 .stream()
                 .map(member -> new ProjectMemberDto(
@@ -38,19 +39,14 @@ public class ProjectDto {
                         member.getUser().getUsername(),
                         member.getRole()))
                 .toList();
+        }
+        if (!project.getTasks().isEmpty()){
         this.tasks = project.getTasks()
                 .stream()
-                .map(task -> new Task(
-                        task.getId(),
-                        task.getName(),
-                        task.getDescription(),
-                        task.getDueDate(),
-                        task.getPriority(),
-                        task.getStatus(),
-                        task.getCreatedBy().getId(),
-                        task.getAssignedTo() != null ? task.getAssignedTo().getId() : null,
-                        task.getProject().getId()))
+                .map(task -> new TaskDto(task))
+
                 .toList();
+        }
 
 
 

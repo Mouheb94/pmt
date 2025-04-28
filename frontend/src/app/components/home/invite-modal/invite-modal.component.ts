@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProjectRole } from '../../models/role.model';
-import { ProjectService } from '../../services/project.service';
-import { EmailRole } from '../../models/email-role.model';
+import { ProjectRole } from '../../../models/role.model';
+import { ProjectService } from '../../../services/project.service';
+import { EmailRole } from '../../../models/email-role.model';
 
 @Component({
   selector: 'app-invite-modal',
