@@ -1,12 +1,13 @@
 package com.rendu.backend.service;
 
+import com.rendu.backend.dto.TaskHistoryDto;
 import com.rendu.backend.models.Task;
-import com.rendu.backend.models.TaskHistory;
+import com.rendu.backend.models.User;
 
 import java.util.List;
 
 public interface TaskHistoryService {
-    List<TaskHistory> getHistoryForTask(Task task);
-    TaskHistory save(TaskHistory history);
+    List<TaskHistoryDto> getHistoryForTask(Long taskId);
+    void logTaskChange(Task task, String changedField, String oldValue, String newValue, User modifiedBy);
 }
 

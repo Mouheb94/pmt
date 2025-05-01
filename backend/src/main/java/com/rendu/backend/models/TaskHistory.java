@@ -2,6 +2,7 @@ package com.rendu.backend.models;
 
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "task_history")
 public class TaskHistory {
 
@@ -22,7 +24,7 @@ public class TaskHistory {
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;
 
-    // L'utilisateur ayant effectué le changement (optionnel mais recommandé)
+    // L'utilisateur ayant effectué le changement
     @ManyToOne
     @JoinColumn(name = "modified_by")
     private User modifiedBy;
@@ -39,12 +41,13 @@ public class TaskHistory {
     @Column(name = "new_value")
     private String newValue;
 
-    public TaskHistory() {}
-
-    public TaskHistory(Task task, User modifiedBy, String fieldChanged, String oldValue, String newValue) {
+    public TaskHistory(){}
+    public TaskHistory(Long id, Task task, User modifiedBy, LocalDateTime modificationDate,
+                       String fieldChanged, String oldValue, String newValue) {
+        this.id = id;
         this.task = task;
         this.modifiedBy = modifiedBy;
-        this.modificationDate = LocalDateTime.now();
+        this.modificationDate = modificationDate;
         this.fieldChanged = fieldChanged;
         this.oldValue = oldValue;
         this.newValue = newValue;

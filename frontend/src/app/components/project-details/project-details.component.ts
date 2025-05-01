@@ -87,20 +87,31 @@ export class ProjectDetailsComponent implements OnInit {
       this.taskService.createTask(this.project.id, {
         ...taskData,
         createdBy: {
-            id: this.currentUser?.id,
-            username: this.currentUser?.username
-          },
+          id: this.currentUser?.id,
+          username: this.currentUser?.username
+        },
         status: 'TODO' // Nouvelle tâche est toujours en TODO
       }).subscribe({
-        next: () => {
+        next: (newTask) => {
           this.showCreateTaskModal = false;
           // Recharger uniquement les tâches du projet
           this.taskService.getTasksByProject(this.project!.id).subscribe({
             next: (tasks) => {
-               
               if (this.project) {
-                this.project.tasks = tasks;
-                console.log(tasks+"tasksaLL");
+                // Préserver les informations d'assignation des tâches existantes
+                const existingTasks = this.project.tasks;
+                const updatedTasks = tasks.map(task => {
+                  const existingTask = existingTasks.find(t => t.id === task.id);
+                  if (existingTask) {
+                    return {
+                      ...task,
+                      assignedToId: existingTask.assignedToId,
+                      assignedToUsername: existingTask.assignedToUsername
+                    };
+                  }
+                  return task;
+                });
+                this.project.tasks = updatedTasks;
               }
             },
             error: (error) => {
@@ -110,7 +121,6 @@ export class ProjectDetailsComponent implements OnInit {
         },
         error: (error) => {
           console.error('Erreur lors de la création de la tâche:', error);
-          // TODO: Afficher un message d'erreur à l'utilisateur
         }
       });
     }

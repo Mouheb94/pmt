@@ -16,11 +16,13 @@ export class TaskDetailsModalComponent {
   @Input() task: Task | null = null;
   @Input() projectMembers: { userId: number; username: string; role: ProjectRole; }[] = [];
   @Input() currentUserRole: ProjectRole | null = null;
+  @Input() currentUserId: number | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() taskUpdated = new EventEmitter<Task>();
 
   taskForm: FormGroup;
   isEditing: boolean = false;
+  showAssignModal: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -31,8 +33,7 @@ export class TaskDetailsModalComponent {
       description: [{ value: '', disabled: true }],
       dueDate: [{ value: '', disabled: true }, Validators.required],
       priority: [{ value: 'MEDIUM', disabled: true }, Validators.required],
-      status: [{ value: 'TODO', disabled: true }, Validators.required],
-      assignedTo: [{ value: null, disabled: true }]
+      status: [{ value: 'TODO', disabled: true }, Validators.required]
     });
   }
 
@@ -43,8 +44,7 @@ export class TaskDetailsModalComponent {
         description: this.task.description,
         dueDate: this.task.dueDate,
         priority: this.task.priority,
-        status: this.task.status,
-        assignedTo: this.task.assignedTo?.id || null
+        status: this.task.status
       });
     }
   }
@@ -61,68 +61,23 @@ export class TaskDetailsModalComponent {
   saveChanges(): void {
     if (this.taskForm.valid && this.task) {
       const formValue = this.taskForm.value;
-      const assignedToId = formValue.assignedTo;
       const currentTask = this.task;
 
-      // Si l'assignation a changé, utiliser la méthode assignTask
-      if (assignedToId !== (currentTask.assignedTo?.id || null)) {
-        this.taskService.assignTask(currentTask.id, assignedToId).subscribe({
-          next: (task) => {
-            console.log('Tâche assignée avec succès:', task);
-            // Mettre à jour les autres champs si nécessaire
-            if (formValue.name !== currentTask.name || 
-                formValue.description !== currentTask.description ||
-                formValue.dueDate !== currentTask.dueDate ||
-                formValue.priority !== currentTask.priority ||
-                formValue.status !== currentTask.status) {
-              
-              const updatedTask = {
-                ...currentTask,
-                ...formValue,
-                assignedTo: assignedToId ? 
-                  this.projectMembers.find(m => m.userId === assignedToId) : null
-              };
+      const updatedTask = {
+        ...currentTask,
+        ...formValue
+      };
 
-              this.taskService.updateTask(currentTask.id, updatedTask).subscribe({
-                next: (finalTask) => {
-                  this.taskUpdated.emit(finalTask);
-                  this.isEditing = false;
-                  this.taskForm.disable();
-                },
-                error: (error) => {
-                  console.error('Erreur lors de la mise à jour de la tâche:', error);
-                }
-              });
-            } else {
-              this.taskUpdated.emit(task);
-              this.isEditing = false;
-              this.taskForm.disable();
-            }
-          },
-          error: (error) => {
-            console.error('Erreur lors de l\'assignation de la tâche:', error);
-          }
-        });
-      } else {
-        // Si l'assignation n'a pas changé, mettre à jour la tâche normalement
-        const updatedTask = {
-          ...currentTask,
-          ...formValue,
-          assignedTo: assignedToId ? 
-            this.projectMembers.find(m => m.userId === assignedToId) : null
-        };
-
-        this.taskService.updateTask(currentTask.id, updatedTask).subscribe({
-          next: (task) => {
-            this.taskUpdated.emit(task);
-            this.isEditing = false;
-            this.taskForm.disable();
-          },
-          error: (error) => {
-            console.error('Erreur lors de la mise à jour de la tâche:', error);
-          }
-        });
-      }
+      this.taskService.updateTask(currentTask.id, updatedTask,this.currentUserId).subscribe({
+        next: (task) => {
+          this.taskUpdated.emit(task);
+          this.isEditing = false;
+          this.taskForm.disable();
+        },
+        error: (error) => {
+          console.error('Erreur lors de la mise à jour de la tâche:', error);
+        }
+      });
     }
   }
 
@@ -135,8 +90,7 @@ export class TaskDetailsModalComponent {
         description: this.task.description,
         dueDate: this.task.dueDate,
         priority: this.task.priority,
-        status: this.task.status,
-        assignedTo: this.task.assignedTo?.id || null
+        status: this.task.status
       });
     }
   }
@@ -144,4 +98,5 @@ export class TaskDetailsModalComponent {
   onClose(): void {
     this.close.emit();
   }
+
 } 

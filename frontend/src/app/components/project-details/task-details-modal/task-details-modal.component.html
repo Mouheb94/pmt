@@ -45,16 +45,6 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <label for="assignedTo">Assigné à</label>
-          <select id="assignedTo" formControlName="assignedTo" class="form-control">
-            <option [ngValue]="null">Non assigné</option>
-            <option *ngFor="let member of projectMembers" [ngValue]="member.userId">
-              {{ member.username }}
-            </option>
-          </select>
-        </div>
-
         <div class="modal-footer">
           <button *ngIf="canEdit() && !isEditing" type="button" class="btn-edit" (click)="startEditing()">
             Modifier
@@ -72,4 +62,5 @@
       </form>
     </div>
   </div>
-</div> 
+</div>
+

@@ -15,8 +15,21 @@
             <span class="priority">{{ task.priority }}</span>
             <span class="due-date">Échéance: {{ task.dueDate | date }}</span>
           </div>
-          <div class="assigned-to" *ngIf="task.assignedTo">
-            Assigné à: {{ task.assignedTo.username }}
+          <div class="task-assignment">
+            <div *ngIf="task.assignedToId && task.assignedToUsername" class="assigned-to">
+              Assigné à: {{ task.assignedToUsername }}
+            </div>
+            <div class="task-actions">
+              <button *ngIf="!task.assignedToId && canAssignTask()" 
+                      class="btn-assign" 
+                      (click)="openAssignModal(task, $event)">
+                Assigner
+              </button>
+              <button class="btn-history" 
+                      (click)="openTaskHistory(task, $event)">
+                Historique de tâche
+              </button>
+            </div>
           </div>
         </div>
         <div *ngIf="todoTasks.length === 0" class="empty-column-message">
@@ -35,8 +48,21 @@
             <span class="priority">{{ task.priority }}</span>
             <span class="due-date">Échéance: {{ task.dueDate | date }}</span>
           </div>
-          <div class="assigned-to" *ngIf="task.assignedTo">
-            Assigné à: {{ task.assignedTo.username }}
+          <div class="task-assignment">
+            <div *ngIf="task.assignedToId && task.assignedToUsername" class="assigned-to">
+              Assigné à: {{ task.assignedToUsername }}
+            </div>
+            <div class="task-actions">
+              <button *ngIf="!task.assignedToId && canAssignTask()" 
+                      class="btn-assign" 
+                      (click)="openAssignModal(task, $event)">
+                Assigner
+              </button>
+              <button class="btn-history" 
+                      (click)="openTaskHistory(task, $event)">
+                Historique de tâche
+              </button>
+            </div>
           </div>
         </div>
         <div *ngIf="inProgressTasks.length === 0" class="empty-column-message">
@@ -55,8 +81,21 @@
             <span class="priority">{{ task.priority }}</span>
             <span class="due-date">Échéance: {{ task.dueDate | date }}</span>
           </div>
-          <div class="assigned-to" *ngIf="task.assignedTo">
-            Assigné à: {{ task.assignedTo.username }}
+          <div class="task-assignment">
+            <div *ngIf="task.assignedToId && task.assignedToUsername" class="assigned-to">
+              Assigné à: {{ task.assignedToUsername }}
+            </div>
+            <div class="task-actions">
+              <button *ngIf="!task.assignedToId && canAssignTask()" 
+                      class="btn-assign" 
+                      (click)="openAssignModal(task, $event)">
+                Assigner
+              </button>
+              <button class="btn-history" 
+                      (click)="openTaskHistory(task, $event)">
+                Historique de tâche
+              </button>
+            </div>
           </div>
         </div>
         <div *ngIf="doneTasks.length === 0" class="empty-column-message">
@@ -71,7 +110,31 @@
     [task]="selectedTask"
     [projectMembers]="projectMembers"
     [currentUserRole]="currentUserRole"
+    [currentUserId]="currentUser?.id || null"
     (close)="closeTaskDetails()"
     (taskUpdated)="handleTaskUpdated($event)">
   </app-task-details-modal>
+
+  <app-task-history-modal
+    *ngIf="showTaskHistoryModal && selectedTaskForHistory"
+    [taskId]="selectedTaskForHistory.id"
+    (close)="closeTaskHistory()">
+  </app-task-history-modal>
+
+  <!-- Modal d'assignation -->
+  <div class="modal-overlay" *ngIf="showAssignModal" (click)="closeAssignModal()">
+    <div class="modal-content assign-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Assigner la tâche</h3>
+        <button class="close-btn" (click)="closeAssignModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="members-list">
+          <div *ngFor="let member of projectMembers" class="member-item" (click)="assignTask(member.userId)">
+            {{ member.username }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div> 

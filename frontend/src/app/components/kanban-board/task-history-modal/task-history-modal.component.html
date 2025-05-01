@@ -1,0 +1,30 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Historique de la tâche</h3>
+      <button class="close-btn" (click)="onClose()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="isLoading" class="loading">
+        Chargement de l'historique...
+      </div>
+      <div *ngIf="!isLoading && taskHistory.length === 0" class="no-history">
+        Aucun historique disponible pour cette tâche.
+      </div>
+      <div *ngIf="!isLoading && taskHistory.length > 0" class="history-list">
+        <div *ngFor="let history of taskHistory" class="history-item">
+          <div class="history-header">
+            <span class="modification-date">{{ history.modificationDate | date:'medium' }}</span>
+            <span class="modified-by">par {{ history.modifiedBy }}</span>
+          </div>
+          <div class="history-details">
+            <span class="field-changed">{{ history.fieldChanged }}:</span>
+            <span class="old-value">{{ history.oldValue }}</span>
+            <span class="arrow">→</span>
+            <span class="new-value">{{ history.newValue }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

@@ -11,10 +11,12 @@ export interface Task {
     id: number;
     username: string;
   };
-  assignedTo: {
+  assignedTo?: {
     id: number;
     username: string;
-  } | null;
+  };
+  assignedToId?: number;
+  assignedToUsername?: string;
 }
 
 export interface Project {

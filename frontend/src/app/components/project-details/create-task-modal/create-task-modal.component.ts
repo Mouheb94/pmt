@@ -23,8 +23,7 @@ export class CreateTaskModalComponent {
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: [''],
       dueDate: ['', Validators.required],
-      priority: ['MEDIUM', Validators.required],
-      assignedTo: [null]
+      priority: ['MEDIUM', Validators.required]
     });
   }
 

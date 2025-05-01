@@ -137,6 +137,44 @@
   color: #333;
 }
 
+.btn-assign {
+  background-color: #2196f3;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.btn-assign:hover {
+  background-color: #1976d2;
+}
+
+.assign-modal {
+  width: 400px;
+  max-width: 90%;
+}
+
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.member-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.member-item:hover {
+  background-color: #f5f5f5;
+}
+
 .btn-edit:hover {
   background-color: #1976d2;
 }

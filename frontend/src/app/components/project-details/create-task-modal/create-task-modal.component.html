@@ -36,16 +36,6 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <label for="assignedTo">Assigner à</label>
-          <select id="assignedTo" formControlName="assignedTo" class="form-control">
-            <option [ngValue]="null">Non assigné</option>
-            <option *ngFor="let member of projectMembers" [ngValue]="member.userId">
-              {{ member.username }}
-            </option>
-          </select>
-        </div>
-
         <div class="modal-footer">
           <button type="submit" class="btn-submit" [disabled]="taskForm.invalid">
             Créer
