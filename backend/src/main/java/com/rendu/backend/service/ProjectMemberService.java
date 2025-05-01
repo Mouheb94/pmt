@@ -9,6 +9,6 @@ public interface ProjectMemberService {
     ProjectMember addMemberToProject(ProjectMember projectMember);
     List<ProjectMember> getMembersByProject(Long projectId);
     List<ProjectMember> getProjectsByUser(Long userId);
-    void removeMember(Long memberId);
+
 }
 

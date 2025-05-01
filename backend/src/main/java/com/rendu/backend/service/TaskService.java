@@ -12,7 +12,7 @@ public interface TaskService {
     Task updateTask(Long id, Long modifiedBy, Task updatedTask);
     Task getTaskById(Long id);
     List<Task> getAllTasks();
-    void deleteTask(Long id);
+
 
     List<Task> getTasksByStatus(TaskStatus status);
 

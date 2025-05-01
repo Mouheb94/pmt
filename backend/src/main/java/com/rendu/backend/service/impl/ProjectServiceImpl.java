@@ -110,12 +110,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-        public void deleteProject(Long id) {
-            Project project = projectRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
-            projectRepository.delete(project);
-        }
+
 
     @Override
     public void inviteMembres(Long projectId, List<EmailRole> emailRoles) {

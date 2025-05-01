@@ -25,11 +25,6 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
- /*   @PostMapping("/create")
-    public ResponseEntity<ProjectDto> createProject(@RequestBody ProjectDto projectDto) {
-        ProjectDto createProject = projectService.createProject(projectDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createProject);
-    }*/
 
     @PostMapping("/create")
     public ResponseEntity<ProjectDto> createProject(@RequestBody ProjectCreateDto projectDto) {
@@ -57,11 +52,7 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.updateProject(id, projectDto));
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteProject(@PathVariable Long id) {
 
-        projectService.deleteProject(id);
-    }
 
     @PostMapping("/invite/{projectId}")
     public void inviteMembres(@PathVariable Long projectId, @RequestBody List<EmailRole> emailRoles){

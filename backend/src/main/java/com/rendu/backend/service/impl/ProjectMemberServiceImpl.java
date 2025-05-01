@@ -35,9 +35,5 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         return projectMemberRepository.findByUserId(userId);
     }
 
-    @Override
-    public void removeMember(Long memberId) {
-        projectMemberRepository.deleteById(memberId);
-    }
 }
 

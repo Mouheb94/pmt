@@ -24,4 +24,6 @@ public class TaskHistoryDto {
         this.modifiedBy=getModifiedBy();
 
     }
+    public TaskHistoryDto() {
+    }
 }

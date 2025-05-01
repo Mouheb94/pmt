@@ -34,9 +34,6 @@ public class ProjectMemberController {
         return projectMemberService.getProjectsByUser(userId);
     }
 
-    @DeleteMapping("/{id}")
-    public void removeMember(@PathVariable Long id) {
-        projectMemberService.removeMember(id);
-    }
+
 }
 

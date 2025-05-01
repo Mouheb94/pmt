@@ -40,10 +40,7 @@ public class TaskController {
     public Task getTaskById(@PathVariable Long id) {
         return taskService.getTaskById(id);
     }
-    @GetMapping("/{status}")
-    public List<Task> getTaskByStatus(@PathVariable TaskStatus status) {
-        return taskService.getTasksByStatus(status);
-    }
+
 
     @PatchMapping ("/assigner/{userId}/{taskId}")
     public Task assigneTask(@PathVariable Long userId,@PathVariable Long taskId) {
@@ -56,9 +53,6 @@ public class TaskController {
         return taskService.updateTask(idTask, idUser,updatedTask);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
-    }
+
 }
 
