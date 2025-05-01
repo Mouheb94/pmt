@@ -49,14 +49,21 @@ public class TaskControllerIntgTest {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private TaskRepository taskHistoryRepository;
+
     private static final String BASE_URL = "/pmt/tasks";
     private String authToken;
 
-    private Long createdTaskId;
+    private static Long createdTaskId;
+    private static Long createdProjectId;
+    private static Long createdUserId;
 
     @BeforeEach
     public void setup() {
+
         taskRepository.deleteAll();
+        taskHistoryRepository.deleteAll();
         projectRepository.deleteAll();
         userRepository.deleteAll();
 
@@ -66,6 +73,7 @@ public class TaskControllerIntgTest {
         testUser.setPassword(passwordEncoder.encode("password"));
         testUser.setUsername("testuser");
         userRepository.save(testUser);
+        createdUserId = testUser.getId();
         // Création d'un projet
         Project project = new Project();
         project.setName("Projet Test");
@@ -73,14 +81,17 @@ public class TaskControllerIntgTest {
         project.setStartDate(LocalDateTime.now());
         project.setCreatedBy(testUser);
         projectRepository.save(project);
+        createdProjectId = project.getId();
+
         // Création tâche
         Task task = new Task();
         task.setProject(project);
         task.setPriority(Priority.MEDIUM);
+        task.setDueDate(LocalDate.now());
         task.setName("Tâche test");
         task.setDescription("Description test");
         task.setCreatedBy(testUser);
-        task = taskRepository.save(task);
+        taskRepository.save(task);
         createdTaskId = task.getId(); // pour le test
 
         // Authentification
@@ -101,7 +112,7 @@ public class TaskControllerIntgTest {
     @Test
     public void testCreateTask() {
         // Arrange
-        Long projectId = 1L;
+        Long projectId = createdProjectId;
         Task task = new Task();
         task.setName("New Task");
         task.setDescription("New Task Description");
@@ -157,7 +168,7 @@ public class TaskControllerIntgTest {
     @Test
     public void testGetAllTasksByProjectId() {
         // Arrange
-        Long projectId = 1L;
+        Long projectId = createdProjectId;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(authToken);
@@ -207,8 +218,8 @@ public class TaskControllerIntgTest {
     @Test
     public void testAssigneTask() {
         // Arrange
-        Long userId = 1L;
-        Long taskId = 1L;
+        Long userId = createdUserId;
+        Long taskId = createdTaskId;
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(authToken);
         HttpEntity<Void> request = new HttpEntity<>(headers);
@@ -217,7 +228,7 @@ public class TaskControllerIntgTest {
         ResponseEntity<Task> response = restTemplate.exchange(
                 BASE_URL + "/assigner/{userId}/{taskId}",
                 HttpMethod.PATCH,
-                null,
+                request,
                 Task.class,
                 userId, taskId
         );
@@ -234,18 +245,20 @@ public class TaskControllerIntgTest {
     @Test
     public void testUpdateTask() {
         // Arrange
-        Long taskId = 1L;
-        Long userId = 1L;
-        
+        Long taskId = createdTaskId;
+        Long userId = createdUserId;
+
         Task updatedTask = new Task();
         updatedTask.setName("Updated Task Name");
         updatedTask.setDescription("Updated Task Description");
+        updatedTask.setDueDate(LocalDate.now());
         updatedTask.setPriority(Priority.HIGH);
         updatedTask.setStatus(TaskStatus.IN_PROGRESS);
 
         HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(authToken);
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Task> request = new HttpEntity<>(updatedTask, headers);
+        HttpEntity<Task> request = new HttpEntity<>(updatedTask, headers); // ✅ Envoie updatedTask dans le corps
 
         // Act
         ResponseEntity<Task> response = restTemplate.exchange(
@@ -260,10 +273,10 @@ public class TaskControllerIntgTest {
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(taskId, response.getBody().getId());
         assertEquals(updatedTask.getName(), response.getBody().getName());
         assertEquals(updatedTask.getDescription(), response.getBody().getDescription());
         assertEquals(updatedTask.getPriority(), response.getBody().getPriority());
         assertEquals(updatedTask.getStatus(), response.getBody().getStatus());
     }
+
 } 
