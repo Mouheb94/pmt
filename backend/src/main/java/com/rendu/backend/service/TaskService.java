@@ -1,7 +1,6 @@
 package com.rendu.backend.service;
 
 import com.rendu.backend.enums.TaskStatus;
-import com.rendu.backend.models.Notification;
 import com.rendu.backend.models.Task;
 import com.rendu.backend.models.User;
 
@@ -20,9 +19,5 @@ public interface TaskService {
 
     List<Task> getAllTasksByProjectId(Long projectId);
 
-    interface NotificationService {
-        Notification sendNotification(String message, User recipient);
-        List<Notification> getUserNotifications(User user);
-        void markAsRead(Long id);
-    }
+
 }
