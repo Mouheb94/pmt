@@ -1,7 +1,6 @@
 package com.rendu.backend.integrationTest;
 
-import com.rendu.backend.dao.ProjectRepository;
-import com.rendu.backend.dao.UserRepository;
+import com.rendu.backend.dao.*;
 import com.rendu.backend.dto.AuthDto;
 import com.rendu.backend.dto.EmailRole;
 import com.rendu.backend.dto.ProjectCreateDto;
@@ -32,16 +31,25 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ProjectControllerIntgTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private ProjectRepository projectRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private ProjectMemberRepository projectMemberRepository;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private ProjectRepository projectRepository;
+    private TaskRepository taskRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     private static final String BASE_URL = "/pmt/projects";
     private String authToken;
@@ -50,8 +58,11 @@ public class ProjectControllerIntgTest {
 
     @BeforeEach
     public void setup() {
+        taskRepository.deleteAll();
+        projectMemberRepository.deleteAll();
         projectRepository.deleteAll();
         userRepository.deleteAll();
+        roleRepository.deleteAll();
 
         // Création utilisateur
         User testUser = new User();

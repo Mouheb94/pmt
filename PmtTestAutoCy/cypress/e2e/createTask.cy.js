@@ -1,0 +1,18 @@
+describe('Test4', () => {
+  it('inviteMember', () => {
+    cy.visit('http://localhost:4200/')
+    cy.get('#email').type('testMouheb1@test.com')
+    cy.get('#password').type('test')
+    cy.get('.submit-btn').click()
+    cy.get(':nth-child(16) > .project-header > .project-actions > .action-buttons > .btn-details').click()
+    cy.get('h1').should('contain', 'projectMouheb1')
+    cy.get('.create-task-btn').click()
+    cy.get('#name').type('testTask')
+    cy.get('#description').type('testDescription')
+    cy.get('#dueDate').type('2025-01-01')
+    cy.get('#priority').select('Basse')
+    cy.get('.btn-submit').click()
+    cy.get('.project-actions > :nth-child(2)').click()
+    cy.get('.logout-btn').click()
+  })
+})

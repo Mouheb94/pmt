@@ -1,0 +1,15 @@
+describe('Test6', () => {
+  it('assignerTask', () => {
+    cy.visit('http://localhost:4200/')
+    cy.get('#email').type('testMouheb1@test.com')
+    cy.get('#password').type('test')
+    cy.get('.submit-btn').click()
+    cy.get(':nth-child(16) > .project-header > .project-actions > .action-buttons > .btn-details').click()
+    cy.get('h1').should('contain', 'projectMouheb1')
+    cy.get(':nth-child(1) > .task-assignment > .task-actions > .btn-assign').click()
+    cy.get('.member-item').click()
+    cy.get('.assigned-to').should('contain', 'testMouheb1')
+    cy.get('.project-actions > :nth-child(2)').click()
+    cy.get('.logout-btn').click()
+  })
+})

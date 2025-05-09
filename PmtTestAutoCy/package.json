@@ -1,0 +1,22 @@
+{
+  "name": "pmttestautocy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ng serve",
+    "build": "ng build",
+    "serve:dist": "serve dist -l 3000",
+    "cypress:open": "cypress open",
+    "test:e2e": "npm run build && npm run serve:dist & npx wait-on http://localhost:3000 && npm run cypress:open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^14.3.3",
+    "serve": "^14.2.4",
+    "wait-on": "^7.2.0"
+  }
+}
