@@ -68,6 +68,7 @@ jobs:
           node-version: "18"
 
       - name: Install Angular CLI
+        working-directory: ./frontend
         run: npm install -g @angular/cli
 
       - name: Install Frontend Dependencies
