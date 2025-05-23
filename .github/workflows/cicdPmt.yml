@@ -9,6 +9,7 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     services:
       mysql:
         image: mysql:8.0
@@ -17,12 +18,6 @@ jobs:
           MYSQL_DATABASE: pmt
         ports:
           - 3308:3306
-        options: >-
-          healthcheck:
-            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-            interval: 10s
-            timeout: 5s
-            retries: 5
 
     steps:
       - name: Checkout code
@@ -34,6 +29,17 @@ jobs:
         with:
           java-version: 17
           distribution: 'temurin'
+
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {1..30}; do
+            if mysqladmin ping -h127.0.0.1 -P3308 -uroot -proot --silent; then
+              echo "MySQL is up!";
+              break;
+            fi
+            echo "Waiting for MySQL ($i)...";
+            sleep 2;
+          done
 
       - name: Build backend
         working-directory: ./backend
@@ -85,6 +91,3 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pmt-frontend:latest
-
-
-
