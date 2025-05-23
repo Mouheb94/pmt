@@ -62,7 +62,7 @@ public class TaskHistoryControllerIntgTest {
 
     @BeforeEach
     void setUp() {
-        // Nettoyage
+        // Nettoyage dans le bon ordre pour respecter les contraintes de clé étrangère
         taskHistoryRepository.deleteAll();
         taskRepository.deleteAll();
         projectRepository.deleteAll();
@@ -73,7 +73,7 @@ public class TaskHistoryControllerIntgTest {
         testUser.setEmail("test@example.com");
         testUser.setPassword(passwordEncoder.encode("password"));
         testUser.setUsername("testuser");
-        userRepository.save(testUser);
+        testUser = userRepository.save(testUser);
 
         // Création d'un projet
         Project project = new Project();
@@ -81,8 +81,7 @@ public class TaskHistoryControllerIntgTest {
         project.setDescription("Description du projet test");
         project.setStartDate(LocalDateTime.now());
         project.setCreatedBy(testUser);
-        projectRepository.save(project);
-
+        project = projectRepository.save(project);
 
         // Création tâche
         Task task = new Task();
@@ -92,7 +91,7 @@ public class TaskHistoryControllerIntgTest {
         task.setDescription("Description test");
         task.setCreatedBy(testUser);
         task = taskRepository.save(task);
-        createdTaskId = task.getId(); // pour le test
+        createdTaskId = task.getId();
 
         // Création historique
         TaskHistory history = new TaskHistory();
@@ -121,7 +120,6 @@ public class TaskHistoryControllerIntgTest {
     @Test
     public void testGetHistoryByTask_WithHistory() {
         // Arrange
-        Long taskId = 1L; // ID de la tâche de test
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(authToken);
         HttpEntity<Void> request = new HttpEntity<>(headers);
@@ -132,20 +130,20 @@ public class TaskHistoryControllerIntgTest {
                 HttpMethod.GET,
                 request,
                 new ParameterizedTypeReference<List<TaskHistoryDto>>() {},
-                taskId
+                createdTaskId  // Utiliser l'ID de la tâche créée dans setUp
         );
 
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertFalse(response.getBody().isEmpty());
+        assertTrue(response.getBody().size() > 0, "La liste d'historique ne devrait pas être vide");
         
         // Vérification des données de l'historique
         TaskHistoryDto historyDto = response.getBody().get(0);
-        assertNotNull(historyDto.getFieldChanged());
-        assertNotNull(historyDto.getOldValue());
-        assertNotNull(historyDto.getNewValue());
+        assertEquals("description", historyDto.getFieldChanged());
+        assertEquals("Old desc", historyDto.getOldValue());
+        assertEquals("New desc", historyDto.getNewValue());
         assertNotNull(historyDto.getModificationDate());
         assertNotNull(historyDto.getModifiedBy());
     }

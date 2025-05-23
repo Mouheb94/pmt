@@ -203,7 +203,7 @@ public class TaskControllerIntgTest {
                 HttpMethod.GET,
                 request,
                 Task.class,
-                createdTaskId // Utilise l'ID de la tâche créée en setup()
+                createdTaskId
         );
 
         // Assert

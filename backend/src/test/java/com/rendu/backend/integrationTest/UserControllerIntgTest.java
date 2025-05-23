@@ -4,6 +4,9 @@ import com.rendu.backend.controleurs.UserController;
 import com.rendu.backend.dto.AuthDto;
 import com.rendu.backend.models.User;
 import com.rendu.backend.dao.UserRepository;
+import com.rendu.backend.dao.TaskHistoryRepository;
+import com.rendu.backend.dao.TaskRepository;
+import com.rendu.backend.dao.ProjectRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,15 @@ public class UserControllerIntgTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TaskHistoryRepository taskHistoryRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
+
     private String authToken;
 
     @Autowired
@@ -38,13 +50,18 @@ public class UserControllerIntgTest {
 
     @BeforeEach
     void setUp() {
+        // Suppression dans l'ordre pour respecter les contraintes de clé étrangère
+        taskHistoryRepository.deleteAll();
+        taskRepository.deleteAll();
+        projectRepository.deleteAll();
         userRepository.deleteAll();
+
         // Créer un utilisateur de test et obtenir le token
         User testUser = new User();
         testUser.setEmail("test@example.com");
         testUser.setPassword(passwordEncoder.encode("password"));
         testUser.setUsername("testuser");
-        userRepository.save(testUser);
+        testUser = userRepository.save(testUser);
 
         AuthDto authDto = new AuthDto();
         authDto.setEmail("test@example.com");
