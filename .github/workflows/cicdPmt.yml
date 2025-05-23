@@ -77,7 +77,7 @@ jobs:
       - name: Run Frontend Tests
         working-directory: ./frontend
         run: ng test --watch=false --browsers=ChromeHeadless
-
+        
       # ===== Build and Push Docker Images =====
       - name: Docker Login
         if: github.ref == 'refs/heads/main'
