@@ -44,6 +44,8 @@ jobs:
 
       - name: Build backend
         working-directory: ./backend
+                env:
+          MYSQL_DATABASE: pmt
         run: mvn clean package -DskipTests
 
       - name: Run backend tests
