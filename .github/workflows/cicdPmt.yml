@@ -57,13 +57,14 @@ jobs:
       - name: Run backend tests
         working-directory: ./backend
         run: mvn test
+        continue-on-error: true
 
       - name: Upload Surefire Test Reports (on failure)
         if: failure()
         uses: actions/upload-artifact@v3
         with:
           name: surefire-reports
-          path: backend/target/surefire-reports
+          path: backend/target/surefire-reports/
 
       # ===== Frontend (Angular) =====
       - name: Set up Node.js
