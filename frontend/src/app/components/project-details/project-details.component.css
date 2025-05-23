@@ -1,85 +1,123 @@
+/* === Conteneur Principal === */
 .container {
-  padding: 20px;
+  padding: 40px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* === Carte (Card) === */
 .card {
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
+.card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* === En-tête de carte === */
 .card-header {
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
+  background: linear-gradient(90deg, #3f51b5, #5c6bc0);
+  color: white;
+  padding: 18px 24px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
+/* === Élément de liste === */
 .list-group-item {
+  padding: 14px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #eee;
+  background-color: #fafafa;
 }
 
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+/* === Détails Projet === */
 .project-details {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  margin-top: 40px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* === En-tête Projet === */
 .project-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
 }
 
 .project-header h1 {
   margin: 0;
-  color: #333;
+  font-size: 26px;
+  font-weight: 700;
+  color: #2c3e50;
 }
 
+/* === Actions Projet === */
 .project-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .project-actions button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 6px;
   font-weight: 500;
-  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 .project-actions button:first-child {
-  background-color: #2196f3;
+  background-color: #1976d2;
   color: white;
 }
 
 .project-actions button:last-child {
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: #e3f2fd;
+  color: #1976d2;
 }
 
 .project-actions button:hover {
-  opacity: 0.9;
+  transform: translateY(-2px);
 }
 
+/* === Infos Projet === */
 .project-info {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+  margin-top: 20px;
+  padding: 24px;
+  border-radius: 10px;
+  background-color: #fdfdfd;
+  border: 1px solid #e0e0e0;
 }
 
 .project-info p {
   margin: 10px 0;
-  color: #666;
+  color: #555;
+  font-size: 15px;
 }
 
+/* === Section Kanban === */
 .kanban-section {
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
+/* === En-tête Kanban === */
 .kanban-header {
   display: flex;
   justify-content: space-between;
@@ -88,21 +126,24 @@
 }
 
 .kanban-header h2 {
-  margin: 0;
+  font-size: 22px;
   color: #333;
+  font-weight: 600;
 }
 
+/* === Bouton Tâche === */
 .create-task-btn {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #43a047;
+  color: #fff;
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 6px;
   border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .create-task-btn:hover {
-  background-color: #45a049;
-} 
+  background-color: #388e3c;
+}

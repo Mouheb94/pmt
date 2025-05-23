@@ -9,16 +9,18 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 10px; /* Ajouté pour éviter les débordements sur petits écrans */
 }
 
 .modal-content {
   background: white;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   width: 500px;
-  max-width: 90%;
+  max-width: 100%;
   max-height: 80vh;
   overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 .modal-header {
@@ -26,18 +28,32 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
 }
 
 .close-btn {
   background: none;
   border: none;
   font-size: 24px;
+  color: #888;
   cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close-btn:hover {
+  color: #333;
 }
 
 .member-item {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .member-info {
@@ -47,10 +63,13 @@
 }
 
 .member-name {
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 15px;
+  color: #222;
 }
 
 .member-role {
   color: #666;
-  font-size: 0.9em;
-} 
+  font-size: 14px;
+  font-style: italic;
+}
