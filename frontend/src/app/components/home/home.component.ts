@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -28,7 +28,8 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private projectService: ProjectService,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef,
   ) {
     this.projectForm = this.fb.group({
       name: ['', Validators.required],
@@ -40,6 +41,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.loadProjects();
     this.loadCurrentUser();
+    this.projectService.projectCreated$.subscribe(() => {
+      this.refreshProjects();
+    });
   }
 
   loadCurrentUser(): void {
@@ -63,9 +67,12 @@ export class HomeComponent implements OnInit {
   }
 
   loadProjects(): void {
+    console.log('Chargement des projets...');
     this.projectService.getProjects().subscribe({
       next: (projects) => {
+        console.log('Projets reçus:', projects);
         this.projects = projects;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Erreur lors du chargement des projets:', error);
@@ -104,14 +111,18 @@ export class HomeComponent implements OnInit {
         name: formValue.name,
         description: formValue.description,
         startDate: new Date(formValue.startDate + 'T00:00:00'),
-       // createdById: 1 // TODO: Récupérer l'ID de l'utilisateur connecté
       };
       
+      console.log('Création du projet avec les données:', projectDto);
       this.projectService.createProject(projectDto).subscribe({
         next: (response) => {
           console.log('Projet créé avec succès:', response);
+          if (response) {
+            this.projects = [...this.projects, response];
+          }
           this.resetForm();
           this.setActiveTab('dashboard');
+          this.cdr.detectChanges();
         },
         error: (error) => {
           console.error('Erreur lors de la création du projet:', error);
@@ -145,5 +156,11 @@ export class HomeComponent implements OnInit {
   handleInvite(data: {email: string, role: ProjectRole}): void {
     console.log('Inviter:', data.email, 'avec le rôle:', data.role, 'au projet:', this.selectedProjectId);
     this.closeInviteModal();
+  }
+  refreshProjects(): void {
+    console.log('Rafraîchissement des projets...');
+    this.loadProjects();
+    this.cdr.detectChanges();
+    console.log('Projets après rafraîchissement:', this.projects);
   }
 } 

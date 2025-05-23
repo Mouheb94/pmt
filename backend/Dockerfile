@@ -7,7 +7,6 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Install netcat instead of mysql-client
 RUN apk add --no-cache netcat-openbsd
 
 COPY --from=build /app/target/*.jar app.jar
