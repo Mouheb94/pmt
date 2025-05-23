@@ -78,6 +78,7 @@ jobs:
         working-directory: ./frontend
         run: ng test --watch=false --browsers=ChromeHeadless
         
+        
       # ===== Build and Push Docker Images =====
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
