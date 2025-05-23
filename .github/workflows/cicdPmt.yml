@@ -74,7 +74,9 @@ jobs:
         working-directory: ./frontend
         run: |
           npm install --legacy-peer-deps
-          npm install @popperjs/core --save
+          npm install @angular/localize@19.2.8 --save --legacy-peer-deps
+          npm install @ng-bootstrap/ng-bootstrap@18.0.0 --save --legacy-peer-deps
+          npm install @popperjs/core --save --legacy-peer-deps
 
       - name: Run Frontend Tests
         working-directory: ./frontend
