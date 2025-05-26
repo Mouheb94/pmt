@@ -6,8 +6,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies (with peer-deps workaround)
-RUN npm ci --legacy-peer-deps
+# Install dependencies with legacy peer deps and force flag
+RUN npm install --legacy-peer-deps --force
 
 # Copy source code
 COPY . .
@@ -20,8 +20,6 @@ FROM nginx:alpine
 
 # Copy built assets from build stage
 COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf

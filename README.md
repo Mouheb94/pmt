@@ -138,7 +138,7 @@ Résultat d'une URL sécurisée
 ```bash
 mvn clean verify
 ```
-Pour voir le résultat, naviguez vers target/site/jacoco/index.html comme indiqué sur l'image.
+Pour voir le résultat, naviguez vers target/site/jacoco/index.html.
 
 <img src="./screenshot\couvertureTestBackend.png" alt="couvertureTestBackend" >
 
