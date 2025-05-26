@@ -19,7 +19,7 @@ PMT est une plateforme de gestion de projet collaborative destinée aux équipes
 ## 🏗️ Architecture
 
 ### Diagramme de la base de données
-<img src="./screenshot/diagrammeDeCalsse.png" alt="diagramme de classe" >
+<img src="./screenshot\diagrammeDeCalsse.png" alt="diagramme de classe" >
 
 ## 📋 Prérequis
 
