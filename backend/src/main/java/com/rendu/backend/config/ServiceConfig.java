@@ -32,7 +32,14 @@ public class ServiceConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/pmt/users/login", "/pmt/users/signup").permitAll()
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/pmt/users/login",
+                                "/pmt/users/signup",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
                         .requestMatchers("/pmt/task-history/**").authenticated()
                         .anyRequest().authenticated()
                 )
