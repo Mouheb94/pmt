@@ -1,7 +1,7 @@
 # Project Management Tool (PMT)
 
 PMT est une plateforme de gestion de projet collaborative destinée aux équipes de développement logiciel. Cette application permet aux équipes de planifier, suivre et collaborer sur des projets de manière efficace.
-
+Lien GitHub : https://github.com/Mouheb94/pmt.git
 ## 📋 Table des matières
 - [Architecture](#architecture)
 - [Prérequis](#prérequis)
