@@ -14,6 +14,7 @@ PMT est une plateforme de gestion de projet collaborative destinée aux équipes
   - [Tests Backend](#tests-backend)
   - [Lancement du Frontend](#lancement-du-frontend)
   - [Tests Frontend](#tests-frontend)
+  - [Tests E2E avec Cypress](#tests-e2e-avec-cypress)
 - [Déploiement avec Docker](#déploiement-avec-docker)
 
 ## 🏗️ Architecture
@@ -162,6 +163,28 @@ ng test --code-coverage
 Naviguez vers le dossier couvergae/src/index.html pour voir le résultat:
 
 <img src="./screenshot\couvertureTestFrontend.png" alt="couvertureTestFrontend" >
+
+### Tests E2E avec Cypress
+Les tests end-to-end (E2E) sont effectués avec Cypress, un outil moderne pour tester les interfaces utilisateur.
+1. Installation de Cypress
+Naviguez dans le dossier Frontend :
+```bash
+cd PmtTestAutoCy
+```
+2. Installez Cypress en tant que dépendance de développement :
+```bash
+npm install cypress --save-dev
+```
+3. Lancement de l’interface graphique (mode interactif)
+```bash
+npx cypress open
+```
+Cela ouvrira l’interface de Cypress où vous pourrez exécuter les tests E2E dans un navigateur.
+4. Lancement des tests en mode headless (ligne de commande)
+```bash
+npx cypress run
+```
+Cela exécutera tous les tests automatiquement sans interface graphique.
 
 ## 🐳 Déploiement avec Docker
 
