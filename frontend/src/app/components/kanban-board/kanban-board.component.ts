@@ -113,25 +113,30 @@ export class KanbanBoardComponent implements OnInit {
     this.showAssignModal = false;
     this.taskToAssign = null;
   }
-
-  assignTask(userId: number): void {
-    if (this.taskToAssign) {
-      this.taskService.assignTask(this.taskToAssign.id, userId).subscribe({
-        next: (task) => {
-          
-          const index = this.tasks.findIndex(t => t.id === task.id);
-          if (index !== -1) {
-            this.tasks[index] = task;
+assignTask(userId: number): void {
+  if (this.taskToAssign) {
+    this.taskService.assignTask(this.taskToAssign.id, userId).subscribe({
+      next: () => {
+        // Recharge toutes les tâches du projet
+        this.taskService.getTasksByProject(this.projectId).subscribe({
+          next: (tasks) => {
+            this.tasks = tasks;
             this.updateTaskLists();
+            this.closeAssignModal();
+          },
+          error: (error) => {
+            console.error('Erreur lors du rechargement des tâches:', error);
+            this.closeAssignModal();
           }
-          this.closeAssignModal();
-        },
-        error: (error) => {
-          console.error('Erreur lors de l\'assignation de la tâche:', error);
-        }
-      });
-    }
+        });
+      },
+      error: (error) => {
+        console.error('Erreur lors de l\'assignation de la tâche:', error);
+        this.closeAssignModal();
+      }
+    });
   }
+}
 
   openTaskHistory(task: Task, event: Event): void {
     event.stopPropagation();

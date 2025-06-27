@@ -98,20 +98,8 @@ export class ProjectDetailsComponent implements OnInit {
           this.taskService.getTasksByProject(this.project!.id).subscribe({
             next: (tasks) => {
               if (this.project) {
-                // Préserver les informations d'assignation des tâches existantes
-                const existingTasks = this.project.tasks;
-                const updatedTasks = tasks.map(task => {
-                  const existingTask = existingTasks.find(t => t.id === task.id);
-                  if (existingTask) {
-                    return {
-                      ...task,
-                      assignedToId: existingTask.assignedToId,
-                      assignedToUsername: existingTask.assignedToUsername
-                    };
-                  }
-                  return task;
-                });
-                this.project.tasks = updatedTasks;
+ 
+                this.project.tasks = tasks;
               }
             },
             error: (error) => {
